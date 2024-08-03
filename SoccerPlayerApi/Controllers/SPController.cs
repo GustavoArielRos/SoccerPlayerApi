@@ -5,34 +5,37 @@ namespace SoccerPlayerApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SPController : ControllerBase
+    public class SPController : Controller
     {
-        private readonly ISPRepository _spRepository;
+        public readonly ISPRepository _spRepository;
 
-        public SPController(ISPRepository sPRepository)
+        public SPController(ISPRepository spRepository)
         {
-            _spRepository = sPRepository;
+            _spRepository = spRepository;
         }
 
+        //end point que vai acionar a store procedure
         [HttpGet("GetPlayer")]
         public async Task<Player> GetPlayer(string name, int jerseyNumber)
-        {
+        {   
+            //chamando o método do REPOSITÓRIO criado
             var x = await _spRepository.GetPlayer(name, jerseyNumber);
             return x;
         }
 
-        [HttpGet("GetPlayersList")]
-        public async Task<List<Player>> GetPlayersList()
+        [HttpGet("GetPlayerList")]
+        public async Task<List<Player>> GetPlayerList()
         {
-            var x = await _spRepository.GetPlayersList();
+            var x =  await _spRepository.GetPlayersList();
+
             return x;
         }
 
-
         [HttpGet("CreatePlayer")]
-        public async Task<int> CreatePlayer(int jerseyNumber, string name, int teamId)
+        public async Task<int> CreatePlayer(int jerseyNumber, string name, int teamId )
         {
             var x = await _spRepository.CreatePlayer(jerseyNumber, name, teamId);
+
             return x;
         }
 
@@ -40,14 +43,9 @@ namespace SoccerPlayerApi.Controllers
         public async Task<int> UpdatePlayer(int teamId, int playerId)
         {
             var x = await _spRepository.UpdatePlayer(teamId, playerId);
-            return x;
-        }
 
-        [HttpGet("GetJoinedPlayerList")]
-        public async Task<dynamic> GetJoinedPlayerList()
-        {
-            var x = await _spRepository.GetJoinedPlayerList();
             return x;
         }
     }
 }
+
